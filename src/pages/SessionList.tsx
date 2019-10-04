@@ -12,26 +12,42 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { withRouter, RouteComponentProps } from "react-router";
+import { string } from "prop-types";
+import { Storage } from "@capacitor/core";
 
 const sessions = require("../storage/sessions.json");
-type Props = RouteComponentProps<{}> & {
-  dismissPopover: () => void;
+
+type SesionListState = {
+  list: {};
+  elementsType: string;
 };
 
-class ListPage extends React.Component<Props> {
+class SessionList extends React.Component<
+  RouteComponentProps<{}>,
+  SesionListState
+> {
   constructor(props) {
     super(props);
+    this.state = {
+      list: {},
+      elementsType: "sessions"
+    };
+  }
+
+  async componentWillMount() {
+    const result = await Storage.get({ key: "sessions" });
+    this.setState({
+      list: JSON.parse(result.value)
+    });
   }
 
   renderListItem() {
-    const items: any = sessions;
-
     return (
       <IonList>
-        {Object.keys(items).map(id => (
-          <IonItem key={id} button href={`/sessions/${id}`}>
+        {Object.keys(this.state.list).map(id => (
+          <IonItem key={id} button href={`/${this.state.elementsType}/${id}`}>
             <IonLabel>
-              <span>{items[id].title}</span>
+              <span>{this.state.list[id].title}</span>
             </IonLabel>
           </IonItem>
         ))}
@@ -47,7 +63,7 @@ class ListPage extends React.Component<Props> {
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
-            <IonTitle>Sessions</IonTitle>
+            <IonTitle>{this.state.elementsType}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>{this.renderListItem()}</IonContent>
@@ -56,4 +72,4 @@ class ListPage extends React.Component<Props> {
   }
 }
 
-export default withRouter(ListPage);
+export default withRouter(SessionList);
