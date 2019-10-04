@@ -150,13 +150,25 @@ Network.addListener("networkStatusChange", status => {
   }, 500);
 });
 
-Network.getStatus().then(result => {
-  initNotes();
+Network.getStatus().then(async (result) => {
+  let ret = await Storage.get({ key: "fetched"});
 
-  if (result.connected) {
-    fetchStorage();
-  } else {
-    setStorage();
+  if(ret != null && ret.value != "true"){
+
+    console.log("====== INIT =====");
+
+    initNotes();
+
+    if (result.connected) {
+      fetchStorage();
+    } else {
+      setStorage();
+    }
+  
+    await Storage.set({
+      key: "fetched",
+      value: "true"
+    });
   }
 });
 

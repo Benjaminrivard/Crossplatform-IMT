@@ -46,7 +46,12 @@ class SpeakerList extends React.Component<
     return (
       <IonList>
         {Object.keys(this.state.list).map(id => (
-          <IonItem detail key={id} href={`/${this.state.elementsType}/${id}`}>
+          <IonItem
+            detail
+            key={id}
+            routerDirection="forward"
+            href={`/${this.state.elementsType}/${id}`}
+          >
             <IonLabel>
               <span>{this.state.list[id].name}</span>
             </IonLabel>
