@@ -10,7 +10,6 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
-  IonButtons
 } from "@ionic/react";
 import React from "react";
 import { withRouter } from "react-router-dom";
