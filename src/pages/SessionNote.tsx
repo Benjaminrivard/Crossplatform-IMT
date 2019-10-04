@@ -36,23 +36,50 @@ const titleStyle = {
 class SessionDetailPage extends React.Component<any, any> {
 
   sessionID = this.props.match.params.id;
-  session: Session;
-  note: Note;
 
   constructor(props) {
     super(props);
-    this.session = sessions[this.sessionID];
+
+    this.state = {
+      session: sessions[this.sessionID],
+      notes: [],
+      note: {}
+    };
+    
     this.getNote();    
   }
 
-  async getNote() {
+  getNote = async() => {
     const ret = await Storage.get({ key: 'notes' });
-    const notes = ret.value != null ? JSON.parse(ret.value.toString()) : null;
-    this.note = notes.find(note => note.session == this.sessionID);
+
+    let notes = ret.value != null ? JSON.parse(ret.value.toString()) : [];
+    let note = notes.find(note => note.session.toString() === this.sessionID);
+
+    if(!note) {
+      note = {
+        description: "",
+        session : +this.sessionID,
+      };
+    }
+
+    this.setState({note, notes})
   }
 
-  saveNote = () => {
-    console.log("saveNote")
+  updateNote = (evt) => {
+    let note = this.state.note;
+    note.description = evt.target.value;
+
+    this.setState({note})
+  }
+
+  saveNote = async () => {
+    let newNotes = this.state.notes.filter(note => note.session.toString() !== this.sessionID);
+    newNotes.push(this.state.note);
+
+    await Storage.set({ 
+      key: 'notes', 
+      value: JSON.stringify(newNotes)
+    });
   }
 
   render() {
@@ -68,11 +95,15 @@ class SessionDetailPage extends React.Component<any, any> {
         </IonHeader>
         <IonContent fullscreen class="ion-padding">
           <p style={labelStyle}>Session :</p>
-          <h3 style={titleStyle}>{this.session.title}</h3>
+          <h3 style={titleStyle}>{this.state.session.title}</h3>
           <hr/>
           <IonItem>
             <IonLabel position="floating">Note</IonLabel>
-            <IonTextarea autoGrow={true}></IonTextarea>
+            <IonTextarea
+              autoGrow={true}
+              value={this.state.note.description}
+              onIonChange={this.updateNote}>
+            </IonTextarea>
           </IonItem>
           <br/>
           <IonButton expand="block" onClick={this.saveNote}>Enregistrer</IonButton>
