@@ -1,20 +1,20 @@
 import { Storage } from "@capacitor/core";
 import {
   IonApp,
+  IonAvatar,
   IonBackButton,
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonRouterLink,
   IonItem,
-  IonAvatar,
-  IonButton
+  IonRouterLink,
+  IonTitle,
+  IonToolbar
 } from "@ionic/react";
 import React from "react";
-import { Session } from "../model/Sessions.model";
 import { Speaker } from "../model/Speaker.model";
+import { withRouter } from "react-router";
 
 class SessionDetailPage extends React.Component<any, any> {
   constructor(props) {
@@ -144,4 +144,4 @@ class SessionDetailPage extends React.Component<any, any> {
   }
 }
 
-export default SessionDetailPage;
+export default withRouter(SessionDetailPage);

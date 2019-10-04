@@ -1,20 +1,18 @@
-import React from "react";
+import { Storage } from "@capacitor/core";
 import {
-  IonBackButton,
-  IonHeader,
-  IonToolbar,
-  IonButton,
-  IonTitle,
-  IonContent,
   IonApp,
+  IonBackButton,
   IonButtons,
-  IonRouterLink
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonRouterLink,
+  IonTitle,
+  IonToolbar
 } from "@ionic/react";
+import React from "react";
+import { withRouter } from "react-router";
 import { Speaker } from "../model/Speaker.model";
-import { Session } from "../model/Sessions.model";
-
-const speakers = require("../storage/speakers.json");
-const sessions = require("../storage/sessions.json");
 
 const nameStyle = {
   textAlign: "center",
@@ -22,19 +20,35 @@ const nameStyle = {
 } as React.CSSProperties;
 
 class PresentateurDetailPage extends React.Component<any, any> {
-  speaker: Speaker;
-
   constructor(props) {
     super(props);
-    this.speaker = speakers[this.props.match.params.id];
+    this.state = {
+      list: {},
+      sessions: {}
+    };
+  }
+
+  async componentWillMount() {
+    const result = await Storage.get({ key: "sessions" });
+    this.setState({
+      sessions: JSON.parse(result.value)
+    });
+
+    const raw = await Storage.get({ key: "speakers" });
+    this.setState({
+      speakers: JSON.parse(raw.value)
+    });
   }
 
   renderImage() {
     let image;
-    if (this.speaker.photoUrl) {
+    if (
+      this.state.speakers[this.props.match.params.id] &&
+      this.state.speakers[this.props.match.params.id].photoUrl
+    ) {
       image = (
         <img
-          src={`https://devfest2018.gdgnantes.com/${this.speaker.photoUrl}`}
+          src={`https://devfest2018.gdgnantes.com/${this.state.speakers[this.props.match.params.id].photoUrl}`}
           alt="speaker"
         ></img>
       );
@@ -45,20 +59,48 @@ class PresentateurDetailPage extends React.Component<any, any> {
 
   renderSessions(speakerId: number) {
     let pres = [];
-    Object.keys(sessions).map(id => {
-      if (sessions[id].speakers && sessions[id].speakers.includes(speakerId)) {
+
+    Object.keys(this.state.sessions).map(id => {
+      if (
+        this.state.sessions &&
+        this.state.sessions[id].speakers &&
+        this.state.sessions[id].speakers.includes(speakerId)
+      ) {
         pres.push(
           <IonRouterLink
             key={id}
             routerDirection="forward"
             href={`/sessions/${id}`}
           >
-            {sessions[id].title}
+            {this.state.sessions[id].title}
           </IonRouterLink>
         );
       }
     });
     return pres;
+  }
+
+  renderSpeaker() {
+    if (
+      this.state.speakers &&
+      this.state.speakers[this.props.match.params.id] &&
+      this.state.speakers[this.props.match.params.id].id
+    ) {
+      return (
+        <div>
+          <h4 style={nameStyle}>
+            {this.state.speakers[this.props.match.params.id].name}
+          </h4>
+          {this.renderImage()}
+          <h5>Biographie</h5>
+          <p>{this.state.speakers[this.props.match.params.id].bio}</p>
+          <h5>Presentations</h5>
+          {this.renderSessions(
+            this.state.speakers[this.props.match.params.id].id
+          )}
+        </div>
+      );
+    }
   }
 
   render() {
@@ -73,16 +115,11 @@ class PresentateurDetailPage extends React.Component<any, any> {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen class="ion-padding">
-          <h4 style={nameStyle}>{this.speaker.name}</h4>
-          {this.renderImage()}
-          <h5>Biographie</h5>
-          <p>{this.speaker.bio}</p>
-          <h5>Presentations</h5>
-          {this.renderSessions(this.speaker.id)}
+          {this.renderSpeaker()}
         </IonContent>
       </IonApp>
     );
   }
 }
 
-export default PresentateurDetailPage;
+export default withRouter(PresentateurDetailPage);
