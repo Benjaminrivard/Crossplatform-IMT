@@ -9,7 +9,8 @@ import {
   IonToolbar,
   IonRouterLink,
   IonItem,
-  IonAvatar
+  IonAvatar,
+  IonButton
 } from "@ionic/react";
 import React from "react";
 import { Session } from "../model/Sessions.model";
@@ -130,7 +131,13 @@ class SessionDetailPage extends React.Component<any, any> {
           {this.renderImage()}
           {this.renderDescription()}
           {this.renderSpeakers()}
-          <IonButton expand="block" href={`/sessions/${this.sessionID}/note`}>Mes Notes</IonButton>
+          <IonButton
+            routerDirection="forward"
+            expand="block"
+            href={`/sessions/${this.sessionID}/note`}
+          >
+            Mes Notes
+          </IonButton>
         </IonContent>
       </IonApp>
     );
