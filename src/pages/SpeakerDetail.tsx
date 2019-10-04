@@ -6,7 +6,9 @@ import {
   IonButton,
   IonTitle,
   IonContent,
-  IonApp
+  IonApp,
+  IonButtons,
+  IonRouterLink
 } from "@ionic/react";
 import { Speaker } from "../model/Speaker.model";
 import { Session } from "../model/Sessions.model";
@@ -45,7 +47,15 @@ class PresentateurDetailPage extends React.Component<any, any> {
     let pres = [];
     Object.keys(sessions).map(id => {
       if (sessions[id].speakers && sessions[id].speakers.includes(speakerId)) {
-        pres.push(<a href={`/sessions/${id}`}>{sessions[id].title}</a>);
+        pres.push(
+          <IonRouterLink
+            key={id}
+            routerDirection="forward"
+            href={`/sessions/${id}`}
+          >
+            {sessions[id].title}
+          </IonRouterLink>
+        );
       }
     });
     return pres;
@@ -56,9 +66,9 @@ class PresentateurDetailPage extends React.Component<any, any> {
       <IonApp>
         <IonHeader translucent>
           <IonToolbar>
-            <IonButton slot="start">
+            <IonButtons slot="start">
               <IonBackButton defaultHref="/speakers"></IonBackButton>
-            </IonButton>
+            </IonButtons>
             <IonTitle>Presentateur</IonTitle>
           </IonToolbar>
         </IonHeader>
