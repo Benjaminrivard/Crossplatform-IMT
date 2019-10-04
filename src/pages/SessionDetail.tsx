@@ -130,6 +130,7 @@ class SessionDetailPage extends React.Component<any, any> {
             <IonRouterLink
               routerDirection="forward"
               href={`/speakers/${speaker.id}`}
+              key={speaker.id}
             >
               <IonCard key={`speaker_${speaker.id}`}>
                 <div style={speakerDivStyle}>

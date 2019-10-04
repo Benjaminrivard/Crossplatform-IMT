@@ -21,6 +21,18 @@ import {
 import React from "react";
 import "./Home.css";
 
+const divStyle = {
+  padding: "1rem",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  width: "100%"
+} as React.CSSProperties;
+
+const btnStyle = {
+  width: "100%"
+} as React.CSSProperties;
+
 const HomePage: React.FC = () => {
   return (
     <IonPage>
@@ -33,41 +45,39 @@ const HomePage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonCard className="welcome-card">
+        <div style={divStyle}>
           <div id="wrapper">
             <img src="/assets/images/poulpitude.png" alt="" />
           </div>
 
-          <IonCardHeader>
-            <IonCardSubtitle></IonCardSubtitle>
-            <IonCardTitle>Conference</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <p>
-              {new Date().toLocaleDateString()} -{" "}
-              {new Date("December 17, 2019 18:30:00").toLocaleDateString()}
-            </p>
-          </IonCardContent>
-        </IonCard>
-        <IonGrid>
+          <h1>DevFest Prog.</h1>
+
+          <p>
+            {new Date().toLocaleDateString()} -{" "}
+            {new Date("December 17, 2019 18:30:00").toLocaleDateString()}
+          </p>
+
+          <br/>
           
-        <IonButton
-          color="light"
-          expand="block"
-          fill="solid"
-          routerDirection="forward"
-          href="/sessions"
-        >
-          Voir les sessions
-        </IonButton>
-        <br/>
-        <IonButton
-          color="light"
-          expand="block"
-          fill="solid">
-            Voir les présentateurs
+          <IonButton
+            style={btnStyle}
+            color="light"
+            expand="block"
+            fill="solid"
+            routerDirection="forward"
+            href="/sessions"
+          >
+            Voir les sessions
           </IonButton>
-        </IonGrid>
+          <br/>
+          <IonButton
+            style={btnStyle}
+            color="light"
+            expand="block"
+            fill="solid">
+              Voir les présentateurs
+            </IonButton>
+        </div>
       </IonContent>
     </IonPage>
   );

@@ -44,7 +44,7 @@ class SessionList extends React.Component<
           <IonItem
             detail
             key={id}
-            routerDirection="forward"
+            routerDirection="none"
             href={`/${this.state.elementsType}/${id}`}
           >
             <IonLabel>

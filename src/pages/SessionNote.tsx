@@ -9,7 +9,8 @@ import {
   IonLabel,
   IonTextarea,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  IonButtons
 } from "@ionic/react";
 import React from "react";
 import { withRouter } from "react-router-dom";
@@ -88,9 +89,9 @@ class SessionDetailPage extends React.Component<any, any> {
       <IonApp>
         <IonHeader translucent>
           <IonToolbar>
-            <IonButton slot="start">
+            <IonButtons slot="start">
               <IonBackButton defaultHref="/sessions"></IonBackButton>
-            </IonButton>
+            </IonButtons>
             <IonTitle>Session</IonTitle>
           </IonToolbar>
         </IonHeader>

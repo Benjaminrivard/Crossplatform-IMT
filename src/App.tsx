@@ -66,19 +66,19 @@ class App extends React.Component {
           <IonSplitPane contentId="main">
             <Menu appPages={appPages} />
             <IonRouterOutlet id="main">
-              <Route path="/home" component={Home} exact={true} />
-              <Route path="/sessions" component={SessionList} exact={true} />
+              <Route path="/home" component={Home} exact />
+              <Route path="/sessions" component={SessionList} exact />
               <Route
                 path="/sessions/:id"
                 component={SessionDetail}
-                exact={true}
+                exact
               />
               <Route path="/sessions/:id/note" component={SessionNote} />
               <Route path="/speakers" component={SpeakerList} exact />
               <Route
                 path="/speakers/:id"
                 component={SpeakerDetail}
-                exact={true}
+                exact
               />
               <Route
                 path="/phone"
