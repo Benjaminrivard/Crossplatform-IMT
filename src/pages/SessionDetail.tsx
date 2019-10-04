@@ -1,16 +1,14 @@
-import { withRouter } from "react-router-dom";
-import React from "react";
 import {
+  IonApp,
   IonBackButton,
-  IonHeader,
-  IonToolbar,
   IonButton,
-  IonTitle,
   IonContent,
-  IonIcon,
-  IonApp
+  IonHeader,
+  IonImg,
+  IonTitle,
+  IonToolbar
 } from "@ionic/react";
-import { render } from "react-dom";
+import React from "react";
 import { Session } from "../model/Sessions.model";
 import { Speaker } from "../model/Speaker.model";
 
@@ -29,18 +27,31 @@ class SessionDetailPage extends React.Component<any, any> {
   renderImage() {
     let image;
     if (this.session.image) {
-      image = <img src={`/assets/${this.session.image}`}></img>;
+      image = <img src={`/assets/${this.session.image}`} alt="session"></img>;
     }
 
     return image;
   }
 
-  renderPresentateur(id: number) {
+  renderSpeakerImage(id: number) {
     let image;
     const speaker: Speaker = pres[id];
     if (speaker.photoUrl) {
-      image = <img src={`/assets/${speaker.photoUrl}`}></img>;
+      image = <img src={`/assets/${speaker.photoUrl}`} alt="speaker"></img>;
     }
+
+    return image;
+  }
+
+  renderSpeakers() {
+    let element;
+    if (this.session && this.session.speakers) {
+      this.session.speakers.map(speaker => {
+        element += <span></span>;
+      });
+    }
+
+    return element;
   }
 
   render() {
@@ -49,7 +60,11 @@ class SessionDetailPage extends React.Component<any, any> {
         <IonHeader translucent>
           <IonToolbar>
             <IonButton slot="start">
-              <IonBackButton defaultHref="/sessions"></IonBackButton>
+              <IonBackButton
+                icon="arrow-round-back"
+                type="button"
+                defaultHref="/sessions"
+              ></IonBackButton>
             </IonButton>
             <IonTitle>Session</IonTitle>
           </IonToolbar>
@@ -58,7 +73,7 @@ class SessionDetailPage extends React.Component<any, any> {
           <IonTitle>{this.session.title}</IonTitle>
           {this.renderImage()}
           <p>{this.session.description}</p>
-          {this.session.speakers.map(speaker => {})}
+          {this.renderSpeakers()}
           <IonButton expand="block" href={`/sessions/${this.sessionID}/note`}>Mes Notes</IonButton>
         </IonContent>
       </IonApp>
