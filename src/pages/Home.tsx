@@ -21,10 +21,9 @@ import {
   IonTitle,
   IonToolbar
 } from "@ionic/react";
-import { book, build, colorFill, grid } from "ionicons/icons";
+
 import React from "react";
 import "./Home.css";
-import ListPage from "./List";
 
 import { Plugins } from "@capacitor/core";
 

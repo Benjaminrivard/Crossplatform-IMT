@@ -59,6 +59,7 @@ class SessionDetailPage extends React.Component<any, any> {
           {this.renderImage()}
           <p>{this.session.description}</p>
           {this.session.speakers.map(speaker => {})}
+          <IonButton expand="block" href={`/sessions/${this.sessionID}/note`}>Mes Notes</IonButton>
         </IonContent>
       </IonApp>
     );

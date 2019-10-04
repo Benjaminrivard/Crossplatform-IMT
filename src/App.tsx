@@ -14,14 +14,19 @@ import "@ionic/react/css/structure.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/typography.css";
+
 import { calendar, home, microphone } from "ionicons/icons";
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
+
 import Menu from "./components/Menu";
 import { AppPage } from "./declarations";
+
 import Home from "./pages/Home";
 import List from "./pages/List";
 import SessionDetail from "./pages/SessionDetail";
+import SessionNote from "./pages/SessionNote";
+
 /* Theme variables */
 import "./theme/variables.css";
 
@@ -67,6 +72,11 @@ class App extends React.Component {
                 component={SessionDetail}
                 exact={true}
               />
+              <Route
+                path="/sessions/:id/note"
+                component={SessionNote}
+                exact={true}
+              />
               <Route exact path="/" render={() => <Redirect to="/home" />} />
             </IonRouterOutlet>
           </IonSplitPane>
@@ -75,6 +85,7 @@ class App extends React.Component {
     );
   }
 }
+
 const fetchStorage = async () => {
   await fetchData("sessions");
   await fetchData("speakers");
@@ -105,7 +116,14 @@ const fetchData = async (key: string) => {
     });
 };
 
-let handler = Network.addListener("networkStatusChange", status => {
+const initNotes = async () => {
+  await Storage.set({
+    key: "notes",
+    value: "[]"
+  })
+};
+
+Network.addListener("networkStatusChange", status => {
   console.log("Network status changed", status);
 
   setTimeout(async () => {
@@ -122,6 +140,8 @@ let handler = Network.addListener("networkStatusChange", status => {
 });
 
 Network.getStatus().then(result => {
+  initNotes();
+  
   if (result.connected) {
     fetchStorage();
   } else {
