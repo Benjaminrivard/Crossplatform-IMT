@@ -20,7 +20,7 @@ import { Redirect, Route } from "react-router-dom";
 import Menu from "./components/Menu";
 import { AppPage } from "./declarations";
 import Home from "./pages/Home";
-import List from "./pages/List";
+import SessionList from "./pages/SessionList";
 import SessionDetail from "./pages/SessionDetail";
 import SpeakerDetail from "./pages/SpeakerDetail";
 /* Theme variables */
@@ -62,7 +62,7 @@ class App extends React.Component {
             <Menu appPages={appPages} />
             <IonRouterOutlet id="main">
               <Route path="/home" component={Home} exact={true} />
-              <Route path="/sessions" component={List} exact={true} />
+              <Route path="/sessions" component={SessionList} exact={true} />
               <Route
                 path="/sessions/:id"
                 component={SessionDetail}

@@ -1,32 +1,25 @@
+import { Plugins } from "@capacitor/core";
 import {
-  IonButtons,
   IonButton,
+  IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonGrid,
-  IonRow,
-  IonCol,
   IonMenuButton,
   IonPage,
+  IonRow,
   IonTitle,
   IonToolbar
 } from "@ionic/react";
-import { book, build, colorFill, grid } from "ionicons/icons";
 import React from "react";
 import "./Home.css";
-import ListPage from "./List";
-
-import { Plugins } from "@capacitor/core";
 
 const speakers = require("../storage/speakers.json");
 const sessions = require("../storage/sessions.json");
