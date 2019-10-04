@@ -6,19 +6,21 @@ import {
   IonButton,
   IonTitle,
   IonContent,
-  IonIcon,
   IonApp,
   IonTextarea,
   IonItem,
-  IonLabel
+  IonLabel,
+  IonButtons
 } from "@ionic/react";
 
 
 import { Session } from "../model/Sessions.model";
 import { Note } from "../model/Note.model";
 
-import { Plugins } from "@capacitor/core";
+import { Plugins, CameraResultType } from "@capacitor/core";
 const { Storage } = Plugins;
+const { Camera } = Plugins;
+
 
 
 const sessions = require("../storage/sessions.json");
@@ -43,43 +45,73 @@ class SessionDetailPage extends React.Component<any, any> {
     this.state = {
       session: sessions[this.sessionID],
       notes: [],
-      note: {}
+      note: {},
     };
-    
-    this.getNote();    
+
+    this.getNote();
   }
 
-  getNote = async() => {
+  getNote = async () => {
     const ret = await Storage.get({ key: 'notes' });
 
     let notes = ret.value != null ? JSON.parse(ret.value.toString()) : [];
     let note = notes.find(note => note.session.toString() === this.sessionID);
 
-    if(!note) {
+    if (!note) {
       note = {
         description: "",
-        session : +this.sessionID,
+        images: [],
+        session: +this.sessionID,
       };
     }
 
-    this.setState({note, notes})
+    this.setState({ note, notes })
   }
 
   updateNote = (evt) => {
     let note = this.state.note;
     note.description = evt.target.value;
 
-    this.setState({note})
+    this.setState({ note })
   }
 
   saveNote = async () => {
     let newNotes = this.state.notes.filter(note => note.session.toString() !== this.sessionID);
     newNotes.push(this.state.note);
 
-    await Storage.set({ 
-      key: 'notes', 
+    await Storage.set({
+      key: 'notes',
       value: JSON.stringify(newNotes)
     });
+  }
+
+  takePicture = async () => {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.Base64
+    });
+
+    let note = this.state.note;
+    note.images.push(image.base64String);
+
+    this.setState({ note });
+  }
+
+  renderImages() {
+    let images = [];
+    if (this.state.note && this.state.note.images) {
+      console.log(this.state.note)
+      this.state.note.images.forEach((img) => {
+        images.push(
+          <img
+            src={`data:image/png;base64, ${img}`}
+            alt="speaker"
+          ></img>)
+      });  
+    }
+    
+    return images;
   }
 
   render() {
@@ -87,16 +119,16 @@ class SessionDetailPage extends React.Component<any, any> {
       <IonApp>
         <IonHeader translucent>
           <IonToolbar>
-            <IonButton slot="start">
+            <IonButtons slot="start">
               <IonBackButton defaultHref="/sessions"></IonBackButton>
-            </IonButton>
+            </IonButtons>
             <IonTitle>Session</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen class="ion-padding">
           <p style={labelStyle}>Session :</p>
           <h3 style={titleStyle}>{this.state.session.title}</h3>
-          <hr/>
+          <hr />
           <IonItem>
             <IonLabel position="floating">Note</IonLabel>
             <IonTextarea
@@ -105,8 +137,10 @@ class SessionDetailPage extends React.Component<any, any> {
               onIonChange={this.updateNote}>
             </IonTextarea>
           </IonItem>
-          <br/>
+          {this.renderImages()}
+          <br />
           <IonButton expand="block" onClick={this.saveNote}>Enregistrer</IonButton>
+          <IonButton expand="block" onClick={this.takePicture}>photo</IonButton>
         </IonContent>
       </IonApp>
     );
