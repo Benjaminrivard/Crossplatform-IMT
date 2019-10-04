@@ -25,6 +25,7 @@ import SessionDetail from "./pages/SessionDetail";
 import SpeakerDetail from "./pages/SpeakerDetail";
 /* Theme variables */
 import "./theme/variables.css";
+import SpeakerList from "./pages/SpeakerList";
 
 const sessions = require("./storage/sessions.json");
 const speakers = require("./storage/speakers.json");
@@ -68,6 +69,7 @@ class App extends React.Component {
                 component={SessionDetail}
                 exact={true}
               />
+              <Route path="/speakers" component={SpeakerList} exact />
               <Route
                 path="/speakers/:id"
                 component={SpeakerDetail}

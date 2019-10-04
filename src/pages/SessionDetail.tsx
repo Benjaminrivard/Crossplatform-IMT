@@ -60,7 +60,11 @@ class SessionDetailPage extends React.Component<any, any> {
         <IonHeader translucent>
           <IonToolbar>
             <IonButton slot="start">
-              <IonBackButton defaultHref="/sessions"></IonBackButton>
+              <IonBackButton
+                icon="arrow-round-back"
+                type="button"
+                defaultHref="/sessions"
+              ></IonBackButton>
             </IonButton>
             <IonTitle>Session</IonTitle>
           </IonToolbar>

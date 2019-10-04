@@ -11,13 +11,12 @@ import {
 import { Speaker } from "../model/Speaker.model";
 import { Session } from "../model/Sessions.model";
 
-
 const speakers = require("../storage/speakers.json");
 const sessions = require("../storage/sessions.json");
 
 const nameStyle = {
   textAlign: "center",
-  marginBottom: "30px",
+  marginBottom: "30px"
 } as React.CSSProperties;
 
 class PresentateurDetailPage extends React.Component<any, any> {
@@ -31,17 +30,20 @@ class PresentateurDetailPage extends React.Component<any, any> {
   renderImage() {
     let image;
     if (this.speaker.photoUrl) {
-      image = <img src={`https://devfest2018.gdgnantes.com/${this.speaker.photoUrl}`} alt="speaker"></img>;
+      image = (
+        <img
+          src={`https://devfest2018.gdgnantes.com/${this.speaker.photoUrl}`}
+          alt="speaker"
+        ></img>
+      );
     }
 
     return image;
   }
 
   renderSessions(speakerId: number) {
-
     let pres = [];
     Object.keys(sessions).map(id => {
-      console.log(sessions[id])
       if (sessions[id].speakers && sessions[id].speakers.includes(speakerId)) {
         pres.push(<a href={`/sessions/${id}`}>{sessions[id].title}</a>);
       }
