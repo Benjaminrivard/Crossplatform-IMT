@@ -22,6 +22,7 @@ import { AppPage } from "./declarations";
 import Home from "./pages/Home";
 import List from "./pages/List";
 import SessionDetail from "./pages/SessionDetail";
+import SpeakerDetail from "./pages/SpeakerDetail";
 /* Theme variables */
 import "./theme/variables.css";
 
@@ -44,7 +45,7 @@ const appPages: AppPage[] = [
   },
   {
     title: "Présentateurs",
-    url: "",
+    url: "/speakers",
     icon: microphone
   }
 ];
@@ -65,6 +66,11 @@ class App extends React.Component {
               <Route
                 path="/sessions/:id"
                 component={SessionDetail}
+                exact={true}
+              />
+              <Route
+                path="/speakers/:id"
+                component={SpeakerDetail}
                 exact={true}
               />
               <Route exact path="/" render={() => <Redirect to="/home" />} />
