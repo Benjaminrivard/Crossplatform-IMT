@@ -1,5 +1,7 @@
 {
   "name": "PWA-ConferenceAPP",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react"
 }
