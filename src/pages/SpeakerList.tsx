@@ -13,15 +13,19 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { withRouter, RouteComponentProps } from "react-router";
-import { string } from "prop-types";
 import { Storage } from "@capacitor/core";
-
-const sessions = require("../storage/sessions.json");
 
 type SpeakerListState = {
   list: {};
   elementsType: string;
 };
+
+const imgStyle = {
+  borderRadius: "50%",
+  height: "40px",
+  margin: "0.5rem 1rem"
+} as React.CSSProperties;
+
 
 class SpeakerList extends React.Component<
   RouteComponentProps<{}>,
@@ -37,6 +41,7 @@ class SpeakerList extends React.Component<
 
   async componentWillMount() {
     const result = await Storage.get({ key: "speakers" });
+    console.log(JSON.parse(result.value))
     this.setState({
       list: JSON.parse(result.value)
     });
@@ -52,6 +57,11 @@ class SpeakerList extends React.Component<
             routerDirection="forward"
             href={`/${this.state.elementsType}/${id}`}
           >
+             <img
+              style={imgStyle}
+              src={`https://devfest2018.gdgnantes.com/${this.state.list[id].photoUrl}`}
+              alt="speaker"
+            ></img>
             <IonLabel>
               <span>{this.state.list[id].name}</span>
             </IonLabel>

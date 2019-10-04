@@ -22,14 +22,12 @@ class TelephonePage extends React.Component<any, any> {
         };
     }
 
-
     async componentWillMount() {
         const info = await Device.getInfo();
         this.setState({
             info
         });
     }
-
 
     render() {
         return (

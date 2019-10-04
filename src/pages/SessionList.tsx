@@ -13,7 +13,6 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { withRouter, RouteComponentProps } from "react-router";
-import { string } from "prop-types";
 import { Storage } from "@capacitor/core";
 
 const sessions = require("../storage/sessions.json");

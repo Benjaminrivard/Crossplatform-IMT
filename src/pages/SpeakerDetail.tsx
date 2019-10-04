@@ -5,10 +5,14 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonItem,
   IonRouterLink,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonCardSubtitle
 } from "@ionic/react";
 import React from "react";
 import { withRouter } from "react-router";
@@ -16,7 +20,18 @@ import { Speaker } from "../model/Speaker.model";
 
 const nameStyle = {
   textAlign: "center",
-  marginBottom: "30px"
+  marginBottom: "30px",
+  fontWeight: "bold"
+} as React.CSSProperties;
+
+const imgStyle = {
+  borderRadius: "50%",
+  padding: "1rem 3rem"
+} as React.CSSProperties;
+
+const titleStyle = {
+  textAlign: "center",
+  fontWeight: "bold"
 } as React.CSSProperties;
 
 class PresentateurDetailPage extends React.Component<any, any> {
@@ -48,6 +63,7 @@ class PresentateurDetailPage extends React.Component<any, any> {
     ) {
       image = (
         <img
+          style={imgStyle}
           src={`https://devfest2018.gdgnantes.com/${this.state.speakers[this.props.match.params.id].photoUrl}`}
           alt="speaker"
         ></img>
@@ -72,7 +88,13 @@ class PresentateurDetailPage extends React.Component<any, any> {
             routerDirection="forward"
             href={`/sessions/${id}`}
           >
-            {this.state.sessions[id].title}
+            <IonCard>
+              <IonCardHeader>
+                <IonCardSubtitle>
+                  {this.state.sessions[id].title}
+                </IonCardSubtitle>
+              </IonCardHeader>
+            </IonCard>
           </IonRouterLink>
         );
       }
@@ -88,13 +110,17 @@ class PresentateurDetailPage extends React.Component<any, any> {
     ) {
       return (
         <div>
-          <h4 style={nameStyle}>
-            {this.state.speakers[this.props.match.params.id].name}
-          </h4>
+          <h4 style={nameStyle}>{this.state.speakers[this.props.match.params.id].name}</h4>
           {this.renderImage()}
-          <h5>Biographie</h5>
-          <p>{this.state.speakers[this.props.match.params.id].bio}</p>
-          <h5>Presentations</h5>
+          <IonCard>
+            <IonCardHeader>
+              <IonCardTitle>Biographie</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent>
+              {this.state.speakers[this.props.match.params.id].bio}
+            </IonCardContent>
+          </IonCard>
+          <h2 style={titleStyle}>Presentations</h2>
           {this.renderSessions(
             this.state.speakers[this.props.match.params.id].id
           )}

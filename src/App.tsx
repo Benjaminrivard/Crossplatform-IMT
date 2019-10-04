@@ -87,7 +87,11 @@ class App extends React.Component {
                 component={SpeakerDetail}
                 exact={true}
               />
-              <Route path="/phone" component={Telephone} exact />
+              <Route
+                path="/phone"
+                component={Telephone}
+                exact={true}
+              />
               <Route exact path="/" render={() => <Redirect to="/home" />} />
             </IonRouterOutlet>
           </IonSplitPane>

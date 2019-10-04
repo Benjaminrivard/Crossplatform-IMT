@@ -10,11 +10,37 @@ import {
   IonItem,
   IonRouterLink,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  IonLabel,
+  IonCard
 } from "@ionic/react";
 import React from "react";
 import { Speaker } from "../model/Speaker.model";
 import { withRouter } from "react-router";
+
+const divStyle = {
+  padding: "1rem"
+} as React.CSSProperties;
+
+const imgStyle = {
+  borderRadius: "50%",
+  height: "70px",
+  width: "auto",
+  margin: "1rem 1rem"
+} as React.CSSProperties;
+
+const speakerDivStyle = {
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "1rem 0"
+} as React.CSSProperties;
+
+const paragraphStyle = {
+  color: "#999999"
+} as React.CSSProperties;
 
 class SessionDetailPage extends React.Component<any, any> {
   constructor(props) {
@@ -46,7 +72,7 @@ class SessionDetailPage extends React.Component<any, any> {
       this.state.list[this.sessionID] &&
       this.state.list[this.sessionID].title
     ) {
-      return <IonTitle>{this.state.list[this.sessionID].title}</IonTitle>;
+      return <h2>{this.state.list[this.sessionID].title}</h2>;
     }
   }
 
@@ -70,6 +96,7 @@ class SessionDetailPage extends React.Component<any, any> {
     if (speaker && speaker.photoUrl) {
       image = (
         <img
+          style={imgStyle}
           src={`https://devfest2018.gdgnantes.com/${speaker.photoUrl}`}
           alt="speaker"
         />
@@ -85,7 +112,7 @@ class SessionDetailPage extends React.Component<any, any> {
       this.state.list[this.sessionID] &&
       this.state.list[this.sessionID].description
     ) {
-      return <p>{this.state.list[this.sessionID].description}</p>;
+      return <p style={paragraphStyle}>{this.state.list[this.sessionID].description}</p>;
     }
   }
 
@@ -95,19 +122,22 @@ class SessionDetailPage extends React.Component<any, any> {
       this.state.list[this.sessionID] &&
       this.state.list[this.sessionID].speakers
     ) {
+      element.push(<h3>Presentateurs : </h3>)
       this.state.list[this.sessionID].speakers.forEach(id => {
         const speaker: Speaker = this.state.speakers[id];
         if (speaker) {
           element.push(
-            <IonItem key={`speaker_${speaker.id}`}>
-              <IonAvatar>{this.renderSpeakerImage(speaker)}</IonAvatar>
-              <IonRouterLink
-                routerDirection="forward"
-                href={`/speakers/${speaker.id}`}
-              >
-                {speaker.name}
-              </IonRouterLink>
-            </IonItem>
+            <IonRouterLink
+              routerDirection="forward"
+              href={`/speakers/${speaker.id}`}
+            >
+              <IonCard key={`speaker_${speaker.id}`}>
+                <div style={speakerDivStyle}>
+                  {this.renderSpeakerImage(speaker)}
+                  <IonLabel>{speaker.name}</IonLabel>
+                </div>
+              </IonCard>
+            </IonRouterLink>
           );
         }
       });
@@ -127,17 +157,20 @@ class SessionDetailPage extends React.Component<any, any> {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
-          {this.renderTitle()}
           {this.renderImage()}
-          {this.renderDescription()}
-          {this.renderSpeakers()}
-          <IonButton
-            routerDirection="forward"
-            expand="block"
-            href={`/sessions/${this.sessionID}/note`}
-          >
-            Mes Notes
-          </IonButton>
+          <div style={divStyle}>
+            {this.renderTitle()}
+            {this.renderDescription()}
+            {this.renderSpeakers()}
+            <br/>
+            <IonButton
+              routerDirection="forward"
+              expand="block"
+              href={`/sessions/${this.sessionID}/note`}
+            >
+              Mes Notes
+            </IonButton>
+          </div>
         </IonContent>
       </IonApp>
     );

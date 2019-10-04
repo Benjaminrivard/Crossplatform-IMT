@@ -6,16 +6,11 @@ import {
   IonButton,
   IonTitle,
   IonContent,
-  IonIcon,
   IonApp,
   IonTextarea,
   IonItem,
   IonLabel
 } from "@ionic/react";
-
-
-import { Session } from "../model/Sessions.model";
-import { Note } from "../model/Note.model";
 
 import { Plugins } from "@capacitor/core";
 const { Storage } = Plugins;
