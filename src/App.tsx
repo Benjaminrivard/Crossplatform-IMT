@@ -14,24 +14,20 @@ import "@ionic/react/css/structure.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/typography.css";
-
-import { calendar, home, microphone, call } from "ionicons/icons";
+import { calendar, call, home, microphone } from "ionicons/icons";
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-
 import Menu from "./components/Menu";
 import { AppPage } from "./declarations";
-
 import Home from "./pages/Home";
-import SessionList from "./pages/SessionList";
 import SessionDetail from "./pages/SessionDetail";
+import SessionList from "./pages/SessionList";
 import SessionNote from "./pages/SessionNote";
 import SpeakerDetail from "./pages/SpeakerDetail";
+import SpeakerList from "./pages/SpeakerList";
 import Telephone from "./pages/Telephone";
-
 /* Theme variables */
 import "./theme/variables.css";
-import SpeakerList from "./pages/SpeakerList";
 
 const sessions = require("./storage/sessions.json");
 const speakers = require("./storage/speakers.json");
@@ -63,7 +59,6 @@ const appPages: AppPage[] = [
 ];
 
 class App extends React.Component {
-
   render() {
     return (
       <IonApp>
@@ -78,16 +73,18 @@ class App extends React.Component {
                 component={SessionDetail}
                 exact={true}
               />
-              <Route
-                path="/sessions/:id/note"
-                component={SessionNote}/>
+              <Route path="/sessions/:id/note" component={SessionNote} />
               <Route path="/speakers" component={SpeakerList} exact />
               <Route
                 path="/speakers/:id"
                 component={SpeakerDetail}
                 exact={true}
               />
-              <Route path="/phone" component={Telephone} exact />
+              <Route
+                path="/phone"
+                component={Telephone}
+                exact={true}
+              />
               <Route exact path="/" render={() => <Redirect to="/home" />} />
             </IonRouterOutlet>
           </IonSplitPane>
@@ -131,7 +128,7 @@ const initNotes = async () => {
   await Storage.set({
     key: "notes",
     value: "[]"
-  })
+  });
 };
 
 Network.addListener("networkStatusChange", status => {
@@ -150,11 +147,10 @@ Network.addListener("networkStatusChange", status => {
   }, 500);
 });
 
-Network.getStatus().then(async (result) => {
-  let ret = await Storage.get({ key: "fetched"});
+Network.getStatus().then(async result => {
+  let ret = await Storage.get({ key: "fetched" });
 
-  if(ret != null && ret.value != "true"){
-
+  if (ret != null && ret.value != "true") {
     console.log("====== INIT =====");
 
     initNotes();
@@ -164,7 +160,7 @@ Network.getStatus().then(async (result) => {
     } else {
       setStorage();
     }
-  
+
     await Storage.set({
       key: "fetched",
       value: "true"

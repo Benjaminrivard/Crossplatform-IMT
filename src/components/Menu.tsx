@@ -9,10 +9,10 @@ import {
   IonMenuToggle,
   IonTitle,
   IonToolbar
-} from '@ionic/react';
-import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { AppPage } from '../declarations';
+} from "@ionic/react";
+import React from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { AppPage } from "../declarations";
 
 interface MenuProps extends RouteComponentProps {
   appPages: AppPage[];

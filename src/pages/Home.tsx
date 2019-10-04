@@ -8,11 +8,9 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonCol,
   IonContent,
   IonGrid,
   IonHeader,
-  IonIcon,
   IonMenuButton,
   IonPage,
   IonRow,
@@ -23,38 +21,7 @@ import {
 import React from "react";
 import "./Home.css";
 
-const speakers = require("../storage/speakers.json");
-const sessions = require("../storage/sessions.json");
-
 const HomePage: React.FC = () => {
-  const { Storage } = Plugins;
-
-  // JSON "set" example
-  async function setStorage() {
-    await Storage.set({
-      key: "speakers",
-      value: JSON.stringify(speakers)
-    });
-
-    await Storage.set({
-      key: "sessions",
-      value: JSON.stringify(sessions)
-    });
-  }
-
-  // JSON "get" example
-  async function getAll(key: string) {
-    const ret = await Storage.get({ key });
-    console.log(ret);
-    return ret != null ? JSON.parse(ret.toString()) : null;
-  }
-
-  // JSON "get" example
-  async function getOne(key: string, id: string) {
-    const ret = await getAll(key);
-    return ret[id];
-  }
-
   return (
     <IonPage>
       <IonHeader>
@@ -82,28 +49,24 @@ const HomePage: React.FC = () => {
             </p>
           </IonCardContent>
         </IonCard>
-
         <IonGrid>
-          <IonRow justify-content-around>
-            <IonCol>
-              <IonButton
-                color="light"
-                expand="block"
-                fill="solid"
-                routerDirection="forward"
-                href="/sessions"
-              >
-                <IonIcon slot="start" name="md-calendar" />
-                Voir les sessions
-              </IonButton>
-            </IonCol>
-            <IonCol>
-              <IonButton color="light" expand="block" fill="solid">
-                <IonIcon slot="start" name="md-microphone" />
-                Voir les présentateurs
-              </IonButton>
-            </IonCol>
-          </IonRow>
+          
+        <IonButton
+          color="light"
+          expand="block"
+          fill="solid"
+          routerDirection="forward"
+          href="/sessions"
+        >
+          Voir les sessions
+        </IonButton>
+        <br/>
+        <IonButton
+          color="light"
+          expand="block"
+          fill="solid">
+            Voir les présentateurs
+          </IonButton>
         </IonGrid>
       </IonContent>
     </IonPage>

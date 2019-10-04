@@ -1,29 +1,25 @@
-import React from "react";
 import {
-  IonBackButton,
-  IonHeader,
-  IonToolbar,
-  IonButton,
-  IonTitle,
-  IonContent,
   IonApp,
-  IonTextarea,
+  IonBackButton,
+  IonButton,
+  IonContent,
+  IonButtons,
+  IonHeader,
   IonItem,
   IonLabel,
-  IonButtons
+  IonTextarea,
+  IonTitle,
+  IonToolbar
 } from "@ionic/react";
+import React from "react";
+import { withRouter } from "react-router-dom";
 
 
-import { Session } from "../model/Sessions.model";
-import { Note } from "../model/Note.model";
 
 import { Plugins, CameraResultType } from "@capacitor/core";
 const { Storage } = Plugins;
 const { Camera } = Plugins;
 
-
-
-const sessions = require("../storage/sessions.json");
 
 const labelStyle = {
   textAlign: "center",
@@ -36,14 +32,13 @@ const titleStyle = {
 } as React.CSSProperties;
 
 class SessionDetailPage extends React.Component<any, any> {
-
   sessionID = this.props.match.params.id;
 
   constructor(props) {
     super(props);
 
     this.state = {
-      session: sessions[this.sessionID],
+      session: {},
       notes: [],
       note: {},
     };
@@ -51,8 +46,16 @@ class SessionDetailPage extends React.Component<any, any> {
     this.getNote();
   }
 
+
+  async componentDidMount() {
+    const result = await Storage.get({ key: "sessions" });
+    this.setState({
+      session: JSON.parse(result.value)[this.sessionID]
+    });
+  }
+
   getNote = async () => {
-    const ret = await Storage.get({ key: 'notes' });
+    const ret = await Storage.get({ key: "notes" });
 
     let notes = ret.value != null ? JSON.parse(ret.value.toString()) : [];
     let note = notes.find(note => note.session.toString() === this.sessionID);
@@ -61,29 +64,31 @@ class SessionDetailPage extends React.Component<any, any> {
       note = {
         description: "",
         images: [],
-        session: +this.sessionID,
+        session: + this.sessionID,
       };
     }
 
-    this.setState({ note, notes })
-  }
+    this.setState({ note, notes });
+  };
 
-  updateNote = (evt) => {
+  updateNote = evt => {
     let note = this.state.note;
     note.description = evt.target.value;
 
-    this.setState({ note })
-  }
+    this.setState({ note });
+  };
 
   saveNote = async () => {
-    let newNotes = this.state.notes.filter(note => note.session.toString() !== this.sessionID);
+    let newNotes = this.state.notes.filter(
+      note => note.session.toString() !== this.sessionID
+    );
     newNotes.push(this.state.note);
 
     await Storage.set({
-      key: 'notes',
+      key: "notes",
       value: JSON.stringify(newNotes)
     });
-  }
+  };
 
   takePicture = async () => {
     const image = await Camera.getPhoto({
@@ -134,8 +139,8 @@ class SessionDetailPage extends React.Component<any, any> {
             <IonTextarea
               autoGrow={true}
               value={this.state.note.description}
-              onIonChange={this.updateNote}>
-            </IonTextarea>
+              onIonChange={this.updateNote}
+            ></IonTextarea>
           </IonItem>
           {this.renderImages()}
           <br />
@@ -147,4 +152,4 @@ class SessionDetailPage extends React.Component<any, any> {
   }
 }
 
-export default SessionDetailPage;
+export default withRouter(SessionDetailPage);
