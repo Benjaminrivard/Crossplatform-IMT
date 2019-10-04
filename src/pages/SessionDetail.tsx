@@ -130,6 +130,7 @@ class SessionDetailPage extends React.Component<any, any> {
           {this.renderImage()}
           {this.renderDescription()}
           {this.renderSpeakers()}
+          <IonButton expand="block" href={`/sessions/${this.sessionID}/note`}>Mes Notes</IonButton>
         </IonContent>
       </IonApp>
     );

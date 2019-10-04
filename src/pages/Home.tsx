@@ -1,4 +1,5 @@
 import { Plugins } from "@capacitor/core";
+
 import {
   IonButton,
   IonButtons,
@@ -18,6 +19,7 @@ import {
   IonTitle,
   IonToolbar
 } from "@ionic/react";
+
 import React from "react";
 import "./Home.css";
 
