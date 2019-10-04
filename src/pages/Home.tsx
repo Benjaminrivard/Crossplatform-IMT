@@ -1,5 +1,6 @@
 import {
   IonButtons,
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -21,7 +22,40 @@ import { book, build, colorFill, grid } from 'ionicons/icons';
 import React from 'react';
 import './Home.css';
 
+import { Plugins } from '@capacitor/core';
+
+const speakers = require('../storage/speakers.json');
+const sessions = require('../storage/sessions.json');
+
 const HomePage: React.FC = () => {
+  const { Storage } = Plugins;
+
+  // JSON "set" example
+  async function setStorage() {
+    await Storage.set({
+      key: 'speakers',
+      value: JSON.stringify(speakers)
+    });
+
+    await Storage.set({
+      key: 'sessions',
+      value: JSON.stringify(sessions)
+    });
+  }
+
+  // JSON "get" example
+  async function getAll(key: string) {
+    const ret = await Storage.get({ key });
+    console.log(ret)
+    return ret != null ? JSON.parse(ret.toString()) : null;
+  }
+
+  // JSON "get" example
+  async function getOne(key: string, id: string) {
+    const ret = await getAll(key);
+    return ret[id];
+  }
+
   return (
     <IonPage>
       <IonHeader>
@@ -67,6 +101,9 @@ const HomePage: React.FC = () => {
             <IonIcon slot="start" color="medium" icon={colorFill} />
             <IonLabel>Theme Your App</IonLabel>
           </IonItem>
+          <IonButton color="danger" onClick={setStorage}>SET</IonButton>
+          {/* <IonButton color="danger" onClick={() => getObject('sessions')}>GET SESSIONS</IonButton>
+          <IonButton color="danger" onClick={() => getObject('speakers')}>GET SPEKERS</IonButton> */}
         </IonList>
       </IonContent>
     </IonPage>
