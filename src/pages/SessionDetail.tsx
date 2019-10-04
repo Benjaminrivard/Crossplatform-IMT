@@ -16,7 +16,7 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { Speaker } from "../model/Speaker.model";
-import { withRouter } from "react-router";
+import { withRouter } from "react-router-dom";
 
 const divStyle = {
   padding: "1rem"
@@ -54,7 +54,7 @@ class SessionDetailPage extends React.Component<any, any> {
 
   sessionID = this.props.match.params.id;
 
-  async componentWillMount() {
+  async componentDidMount() {
     const result = await Storage.get({ key: "sessions" });
     this.setState({
       list: JSON.parse(result.value)

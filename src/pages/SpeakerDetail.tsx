@@ -10,13 +10,13 @@ import {
   IonToolbar,
   IonCard,
   IonCardHeader,
+  IonCardSubtitle,
   IonCardTitle,
   IonCardContent,
-  IonCardSubtitle
+  IonToggle
 } from "@ionic/react";
 import React from "react";
-import { withRouter } from "react-router";
-import { Speaker } from "../model/Speaker.model";
+import { withRouter } from "react-router-dom";
 
 const nameStyle = {
   textAlign: "center",
@@ -43,7 +43,7 @@ class PresentateurDetailPage extends React.Component<any, any> {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const result = await Storage.get({ key: "sessions" });
     this.setState({
       sessions: JSON.parse(result.value)
@@ -110,7 +110,13 @@ class PresentateurDetailPage extends React.Component<any, any> {
     ) {
       return (
         <div>
-          <h4 style={nameStyle}>{this.state.speakers[this.props.match.params.id].name}</h4>
+          <h4 style={nameStyle}>
+            {this.state.speakers[this.props.match.params.id].name}
+          </h4>
+          <div className="inline-flex">
+            Ajouter à la liste de contact <IonToggle />
+          </div>
+
           {this.renderImage()}
           <IonCard>
             <IonCardHeader>

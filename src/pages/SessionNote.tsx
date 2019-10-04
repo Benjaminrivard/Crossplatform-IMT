@@ -1,22 +1,20 @@
-import React from "react";
-import {
-  IonBackButton,
-  IonHeader,
-  IonToolbar,
-  IonButton,
-  IonTitle,
-  IonContent,
-  IonApp,
-  IonTextarea,
-  IonItem,
-  IonLabel
-} from "@ionic/react";
-
 import { Plugins } from "@capacitor/core";
+import {
+  IonApp,
+  IonBackButton,
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonLabel,
+  IonTextarea,
+  IonTitle,
+  IonToolbar
+} from "@ionic/react";
+import React from "react";
+import { withRouter } from "react-router-dom";
+
 const { Storage } = Plugins;
-
-
-const sessions = require("../storage/sessions.json");
 
 const labelStyle = {
   textAlign: "center",
@@ -29,53 +27,61 @@ const titleStyle = {
 } as React.CSSProperties;
 
 class SessionDetailPage extends React.Component<any, any> {
-
   sessionID = this.props.match.params.id;
 
   constructor(props) {
     super(props);
 
     this.state = {
-      session: sessions[this.sessionID],
+      session: {},
       notes: [],
       note: {}
     };
-    
-    this.getNote();    
+
+    this.getNote();
   }
 
-  getNote = async() => {
-    const ret = await Storage.get({ key: 'notes' });
+  async componentDidMount() {
+    const result = await Storage.get({ key: "sessions" });
+    this.setState({
+      session: JSON.parse(result.value)[this.sessionID]
+    });
+  }
+
+  getNote = async () => {
+    const ret = await Storage.get({ key: "notes" });
 
     let notes = ret.value != null ? JSON.parse(ret.value.toString()) : [];
     let note = notes.find(note => note.session.toString() === this.sessionID);
 
-    if(!note) {
+    if (!note) {
       note = {
         description: "",
-        session : +this.sessionID,
+        session: +this.sessionID
       };
     }
 
-    this.setState({note, notes})
-  }
+    this.setState({ note, notes });
+  };
 
-  updateNote = (evt) => {
+  updateNote = evt => {
     let note = this.state.note;
     note.description = evt.target.value;
 
-    this.setState({note})
-  }
+    this.setState({ note });
+  };
 
   saveNote = async () => {
-    let newNotes = this.state.notes.filter(note => note.session.toString() !== this.sessionID);
+    let newNotes = this.state.notes.filter(
+      note => note.session.toString() !== this.sessionID
+    );
     newNotes.push(this.state.note);
 
-    await Storage.set({ 
-      key: 'notes', 
+    await Storage.set({
+      key: "notes",
       value: JSON.stringify(newNotes)
     });
-  }
+  };
 
   render() {
     return (
@@ -91,21 +97,23 @@ class SessionDetailPage extends React.Component<any, any> {
         <IonContent fullscreen class="ion-padding">
           <p style={labelStyle}>Session :</p>
           <h3 style={titleStyle}>{this.state.session.title}</h3>
-          <hr/>
+          <hr />
           <IonItem>
             <IonLabel position="floating">Note</IonLabel>
             <IonTextarea
               autoGrow={true}
               value={this.state.note.description}
-              onIonChange={this.updateNote}>
-            </IonTextarea>
+              onIonChange={this.updateNote}
+            ></IonTextarea>
           </IonItem>
-          <br/>
-          <IonButton expand="block" onClick={this.saveNote}>Enregistrer</IonButton>
+          <br />
+          <IonButton expand="block" onClick={this.saveNote}>
+            Enregistrer
+          </IonButton>
         </IonContent>
       </IonApp>
     );
   }
 }
 
-export default SessionDetailPage;
+export default withRouter(SessionDetailPage);

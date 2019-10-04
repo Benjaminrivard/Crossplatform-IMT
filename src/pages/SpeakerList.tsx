@@ -1,3 +1,4 @@
+import { Storage } from "@capacitor/core";
 import {
   IonButtons,
   IonContent,
@@ -8,12 +9,10 @@ import {
   IonMenuButton,
   IonPage,
   IonTitle,
-  IonToolbar,
-  IonRouterLink
+  IonToolbar
 } from "@ionic/react";
 import React from "react";
-import { withRouter, RouteComponentProps } from "react-router";
-import { Storage } from "@capacitor/core";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 type SpeakerListState = {
   list: {};
@@ -25,7 +24,6 @@ const imgStyle = {
   height: "40px",
   margin: "0.5rem 1rem"
 } as React.CSSProperties;
-
 
 class SpeakerList extends React.Component<
   RouteComponentProps<{}>,
@@ -39,9 +37,9 @@ class SpeakerList extends React.Component<
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const result = await Storage.get({ key: "speakers" });
-    console.log(JSON.parse(result.value))
+    console.log(JSON.parse(result.value));
     this.setState({
       list: JSON.parse(result.value)
     });
@@ -57,7 +55,7 @@ class SpeakerList extends React.Component<
             routerDirection="forward"
             href={`/${this.state.elementsType}/${id}`}
           >
-             <img
+            <img
               style={imgStyle}
               src={`https://devfest2018.gdgnantes.com/${this.state.list[id].photoUrl}`}
               alt="speaker"
