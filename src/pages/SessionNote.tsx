@@ -1,9 +1,9 @@
-import { Plugins } from "@capacitor/core";
 import {
   IonApp,
   IonBackButton,
   IonButton,
   IonContent,
+  IonButtons,
   IonHeader,
   IonItem,
   IonLabel,
@@ -15,7 +15,12 @@ import {
 import React from "react";
 import { withRouter } from "react-router-dom";
 
+
+
+import { Plugins, CameraResultType } from "@capacitor/core";
 const { Storage } = Plugins;
+const { Camera } = Plugins;
+
 
 const labelStyle = {
   textAlign: "center",
@@ -36,11 +41,12 @@ class SessionDetailPage extends React.Component<any, any> {
     this.state = {
       session: {},
       notes: [],
-      note: {}
+      note: {},
     };
 
     this.getNote();
   }
+
 
   async componentDidMount() {
     const result = await Storage.get({ key: "sessions" });
@@ -58,7 +64,8 @@ class SessionDetailPage extends React.Component<any, any> {
     if (!note) {
       note = {
         description: "",
-        session: +this.sessionID
+        images: [],
+        session: + this.sessionID,
       };
     }
 
@@ -84,6 +91,35 @@ class SessionDetailPage extends React.Component<any, any> {
     });
   };
 
+  takePicture = async () => {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.Base64
+    });
+
+    let note = this.state.note;
+    note.images.push(image.base64String);
+
+    this.setState({ note });
+  }
+
+  renderImages() {
+    let images = [];
+    if (this.state.note && this.state.note.images) {
+      console.log(this.state.note)
+      this.state.note.images.forEach((img) => {
+        images.push(
+          <img
+            src={`data:image/png;base64, ${img}`}
+            alt="speaker"
+          ></img>)
+      });  
+    }
+    
+    return images;
+  }
+
   render() {
     return (
       <IonApp>
@@ -107,10 +143,10 @@ class SessionDetailPage extends React.Component<any, any> {
               onIonChange={this.updateNote}
             ></IonTextarea>
           </IonItem>
+          {this.renderImages()}
           <br />
-          <IonButton expand="block" onClick={this.saveNote}>
-            Enregistrer
-          </IonButton>
+          <IonButton expand="block" onClick={this.saveNote}>Enregistrer</IonButton>
+          <IonButton expand="block" onClick={this.takePicture}>photo</IonButton>
         </IonContent>
       </IonApp>
     );
