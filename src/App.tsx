@@ -27,6 +27,13 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import { Plugins } from '@capacitor/core';
+
+const sessions = require('./storage/sessions.json') ;
+const speakers = require('./storage/speakers.json') ;
+
+const { Network, Storage, Toast } = Plugins;
+const baseUrl = "https://devfest-nantes-2018-api.cleverapps.io/";
 
 const appPages: AppPage[] = [
   {
@@ -45,6 +52,65 @@ const appPages: AppPage[] = [
     icon: microphone
   }
 ];
+
+const fetchStorage = async () => {
+  await fetchData('sessions');
+  await fetchData('speakers');
+}
+
+const setStorage = async () => {
+  await Storage.set({ 
+    key: 'sessions',
+    value: JSON.stringify(sessions)
+  });
+
+  await Storage.set({ 
+    key: 'speakers',
+    value: JSON.stringify(speakers)
+  });
+}
+  
+const fetchData = async (key: string) =>{
+  fetch(baseUrl+key)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(async function(json) {
+      await Storage.set({
+        key: key,
+        value: JSON.stringify(json)
+      });
+
+    });
+}
+
+let handler = Network.addListener('networkStatusChange', (status) => {
+  console.log("Network status changed", status);
+
+  setTimeout(async () => {
+    if(status.connected){
+      fetchStorage();
+    }
+    else {
+      console.log("CONNECTION LOST");
+
+      await Toast.show({
+        text: 'Connection lost!'
+      });
+    }
+  }, 500)
+});
+
+Network.getStatus().then(result => {
+  if(result.connected){
+    fetchStorage();
+  }
+  else {
+    setStorage();
+  } 
+});
+
+// Get the current network status
 
 const App: React.FC = () => (
   <IonApp>
