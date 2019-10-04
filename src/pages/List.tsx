@@ -2,74 +2,58 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
   IonItem,
+  IonLabel,
   IonList,
   IonMenuButton,
   IonPage,
   IonTitle,
   IonToolbar
 } from "@ionic/react";
-import {
-  americanFootball,
-  basketball,
-  beer,
-  bluetooth,
-  boat,
-  build,
-  flask,
-  football,
-  paperPlane,
-  wifi
-} from "ionicons/icons";
 import React from "react";
+import { withRouter, RouteComponentProps } from "react-router";
 
-const ListPage: React.FC = () => {
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle>Sessions</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent>
-        <ListItems />
-      </IonContent>
-    </IonPage>
-  );
+const sessions = require("../storage/sessions.json");
+type Props = RouteComponentProps<{}> & {
+  dismissPopover: () => void;
 };
 
-const ListItems = () => {
-  const icons = [
-    flask,
-    wifi,
-    beer,
-    football,
-    basketball,
-    paperPlane,
-    americanFootball,
-    boat,
-    bluetooth,
-    build
-  ];
+class ListPage extends React.Component<Props> {
+  constructor(props) {
+    super(props);
+  }
 
-  const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(x => {
+  renderListItem() {
+    const items: any = sessions;
+
     return (
-      <IonItem key={x}>
-        <IonIcon icon={icons[x - 1]} slot="start" />
-        Item {x}
-        <div className="item-note" slot="end">
-          This is item # {x}
-        </div>
-      </IonItem>
+      <IonList>
+        {Object.keys(items).map(id => (
+          <IonItem key={id} button href={`/sessions/${id}`}>
+            <IonLabel>
+              <span>{items[id].title}</span>
+            </IonLabel>
+          </IonItem>
+        ))}
+      </IonList>
     );
-  });
+  }
 
-  return <IonList>{items}</IonList>;
-};
+  render() {
+    return (
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonMenuButton />
+            </IonButtons>
+            <IonTitle>Sessions</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent fullscreen>{this.renderListItem()}</IonContent>
+      </IonPage>
+    );
+  }
+}
 
-export default ListPage;
+export default withRouter(ListPage);

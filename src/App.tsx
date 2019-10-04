@@ -27,6 +27,7 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import SessionDetail from "./pages/SessionDetail";
 
 const appPages: AppPage[] = [
   {
@@ -46,19 +47,31 @@ const appPages: AppPage[] = [
   }
 ];
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonSplitPane contentId="main">
-        <Menu appPages={appPages} />
-        <IonRouterOutlet id="main">
-          <Route path="/home" component={Home} exact={true} />
-          <Route path="/sessions" component={List} exact={true} />
-          <Route exact path="/" render={() => <Redirect to="/home" />} />
-        </IonRouterOutlet>
-      </IonSplitPane>
-    </IonReactRouter>
-  </IonApp>
-);
+class App extends React.Component {
+  constructor(props: any) {
+    super(props);
+  }
+  render() {
+    return (
+      <IonApp>
+        <IonReactRouter>
+          <IonSplitPane contentId="main">
+            <Menu appPages={appPages} />
+            <IonRouterOutlet id="main">
+              <Route path="/home" component={Home} exact={true} />
+              <Route path="/sessions" component={List} exact={true} />
+              <Route
+                path="/sessions/:id"
+                component={SessionDetail}
+                exact={true}
+              />
+              <Route exact path="/" render={() => <Redirect to="/home" />} />
+            </IonRouterOutlet>
+          </IonSplitPane>
+        </IonReactRouter>
+      </IonApp>
+    );
+  }
+}
 
 export default App;

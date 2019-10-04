@@ -26,10 +26,10 @@ import React from "react";
 import "./Home.css";
 import ListPage from "./List";
 
-import { Plugins } from '@capacitor/core';
+import { Plugins } from "@capacitor/core";
 
-const speakers = require('../storage/speakers.json');
-const sessions = require('../storage/sessions.json');
+const speakers = require("../storage/speakers.json");
+const sessions = require("../storage/sessions.json");
 
 const HomePage: React.FC = () => {
   const { Storage } = Plugins;
@@ -37,12 +37,12 @@ const HomePage: React.FC = () => {
   // JSON "set" example
   async function setStorage() {
     await Storage.set({
-      key: 'speakers',
+      key: "speakers",
       value: JSON.stringify(speakers)
     });
 
     await Storage.set({
-      key: 'sessions',
+      key: "sessions",
       value: JSON.stringify(sessions)
     });
   }
@@ -50,7 +50,7 @@ const HomePage: React.FC = () => {
   // JSON "get" example
   async function getAll(key: string) {
     const ret = await Storage.get({ key });
-    console.log(ret)
+    console.log(ret);
     return ret != null ? JSON.parse(ret.toString()) : null;
   }
 
@@ -73,7 +73,7 @@ const HomePage: React.FC = () => {
       <IonContent>
         <IonCard className="welcome-card">
           <div id="wrapper">
-            <img src="/assets/image/poulpitude.png" alt="" />
+            <img src="/assets/images/poulpitude.png" alt="" />
           </div>
 
           <IonCardHeader>
