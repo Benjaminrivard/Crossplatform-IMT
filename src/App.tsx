@@ -15,7 +15,7 @@ import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/typography.css";
 
-import { calendar, home, microphone } from "ionicons/icons";
+import { calendar, home, microphone, call } from "ionicons/icons";
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
 
@@ -27,6 +27,7 @@ import SessionList from "./pages/SessionList";
 import SessionDetail from "./pages/SessionDetail";
 import SessionNote from "./pages/SessionNote";
 import SpeakerDetail from "./pages/SpeakerDetail";
+import Telephone from "./pages/Telephone";
 
 /* Theme variables */
 import "./theme/variables.css";
@@ -53,13 +54,16 @@ const appPages: AppPage[] = [
     title: "Présentateurs",
     url: "/speakers",
     icon: microphone
+  },
+  {
+    title: "Telephone",
+    url: "/phone",
+    icon: call
   }
 ];
 
 class App extends React.Component {
-  constructor(props: any) {
-    super(props);
-  }
+
   render() {
     return (
       <IonApp>
@@ -83,6 +87,7 @@ class App extends React.Component {
                 component={SpeakerDetail}
                 exact={true}
               />
+              <Route path="/phone" component={Telephone} exact />
               <Route exact path="/" render={() => <Redirect to="/home" />} />
             </IonRouterOutlet>
           </IonSplitPane>
