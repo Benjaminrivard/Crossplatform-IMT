@@ -8,7 +8,8 @@ import {
   IonMenuButton,
   IonPage,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  IonRouterLink
 } from "@ionic/react";
 import React from "react";
 import { withRouter, RouteComponentProps } from "react-router";
@@ -45,7 +46,7 @@ class SessionList extends React.Component<
     return (
       <IonList>
         {Object.keys(this.state.list).map(id => (
-          <IonItem key={id} button href={`/${this.state.elementsType}/${id}`}>
+          <IonItem detail key={id} href={`/${this.state.elementsType}/${id}`}>
             <IonLabel>
               <span>{this.state.list[id].title}</span>
             </IonLabel>
@@ -63,7 +64,9 @@ class SessionList extends React.Component<
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
-            <IonTitle>{this.state.elementsType}</IonTitle>
+            <IonTitle class="ion-text-uppercase">
+              {this.state.elementsType}
+            </IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>{this.renderListItem()}</IonContent>
