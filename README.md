@@ -29,3 +29,10 @@ if neccessary
 Benjamin Rivard
 FIL 2020
 IMT Atlantique
+
+
+# Avis
+Cours complet et TP avec une bonne balance entre tuto guidé et tuto libre
+Cool d'avoir vu Redux, cela me tentant depuis un moment mais je n'avais pas eu l'occasion (j'avais déjà utilisé ngrx cependant)
+Dommage de ne pas avoir fait flutter
+
