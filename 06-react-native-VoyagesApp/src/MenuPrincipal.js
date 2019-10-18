@@ -1,10 +1,12 @@
-import React from 'react'
-import {Text, View} from 'react-native'
+import React from "react";
+import { View, Text } from "react-native";
+import ListerVoyages from "./ListerVoyages";
+import AjouterVoyage from "./AjouterVoyage";
+import { createBottomTabNavigator } from "react-navigation";
 
-const MenuPrincipal = () => {
-    return (<View style={{marginTop:100}}>
-        <Text>Menu principal</Text>
-    </View>)
-}
+const MenuPrincipal = createBottomTabNavigator({
+  ListerVoyages: { screen: ListerVoyages },
+  AjouterVoyage: { screen: AjouterVoyage }
+});
 
-export default MenuPrincipal
+export default MenuPrincipal;

@@ -1,18 +1,14 @@
-import React from 'react';
+import React from "react";
 
 import MenuPrincipal from "./src/MenuPrincipal";
 
-
 export default class App extends React.Component {
+  state = {
+    voyages: []
+  };
 
-    state = {
-        voyages: []
-    }
-
-    render() {
-        return (
-            <MenuPrincipal screenProps={{}}/>
-        );
-    }
+  render() {
+    let { voyages } = this.state;
+    return <MenuPrincipal screenProps={{ voyages }} />;
+  }
 }
-
