@@ -24,8 +24,7 @@ export default class ListerVoyages extends React.Component {
 
   render() {
     // TODO récupérer les voyages depuis l'état global de l'application (App.js)
-    console.log(this.props.navigation.screenProps);
-    const voyages = [];
+    const voyages = this.props.navigation.getScreenProps()["voyages"];
 
     // TODO implémenter la navigation vers la page de détail d'un voyage
     return (
@@ -37,7 +36,12 @@ export default class ListerVoyages extends React.Component {
             <MessageCentre message="Pas encore de voyage !" />
           )}
           {voyages.map((voyage, index) => (
-            <TouchableWithoutFeedback key={index}>
+            <TouchableWithoutFeedback
+              key={index}
+              onPress={() =>
+                this.props.navigation.navigate("UnVoyage", { voyage: voyage })
+              }
+            >
               <View style={styles.conteneurVoyage}>
                 <Text style={styles.ville}>{voyage.ville}</Text>
                 <Text style={styles.pays}>{voyage.pays}</Text>
