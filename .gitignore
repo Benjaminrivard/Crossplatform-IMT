@@ -41,8 +41,7 @@ platforms/
 plugins/
 plugins/android.json
 plugins/ios.json
-www/
-
+#www/
 # Trash data
 $RECYCLE.BIN/
 .DS_Store
