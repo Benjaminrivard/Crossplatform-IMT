@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "PasserALAction",
+    "name": "VoyagesApp",
     "description": "This project is really great.",
-    "slug": "PasserALAction",
+    "slug": "VoyagesApp",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": ["ios", "android"],
@@ -17,9 +17,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     }

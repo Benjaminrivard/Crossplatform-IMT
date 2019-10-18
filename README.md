@@ -22,7 +22,7 @@ if neccessary
 
 04- npm start | npx cap open electron | npx cap add android
 
-05 -
+05 - expo start
 
 # Author
 
